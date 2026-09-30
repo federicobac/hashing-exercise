@@ -16,13 +16,31 @@ public class UserService: IUserService
         _userRepo = userRepo;
         _passwordHasher = passwordHasher;
     }
-    public bool TryLogin(User user)
+    public bool TryLogin(string username, string password)
     {
-        return _userRepo.GetUserByUsername(user.Username).Password == user.Password;
+        User? user = _userRepo.GetUserByUsername(username);
+
+        if (user == null)
+        {
+            return false;
+        }
+
+        return _passwordHasher.VerifyHashedPassword(
+            password,
+            user.PasswordHash
+        );
     }
 
-    public void TryRegister(User user)
+    public void TryRegister(string username, string password)
     {
+        string passwordHash = _passwordHasher.HashAndSaltPassword(password);
+
+        User user = new User
+        {
+            Username = username,
+            PasswordHash = passwordHash
+        };
+
         _userRepo.CreateUser(user);
     }
 }

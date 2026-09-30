@@ -4,7 +4,7 @@ namespace Security.Services;
 
 public interface IUserService
 {
-    bool TryLogin(User user);
+    bool TryLogin(string username, string password);
     
-    void TryRegister(User user);
+    void TryRegister(string username, string password);
 }

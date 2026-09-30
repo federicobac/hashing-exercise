@@ -1,4 +1,3 @@
-using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Security.Dtos;
 using Security.Services;
@@ -11,28 +10,24 @@ public class LoginController : ControllerBase
 
     public LoginController(IUserService userService)
     {
-        _userService =  userService;
+        _userService = userService;
     }
-    
+
     [HttpPost("/login")]
     public IActionResult Login([FromBody] UserDto userDto)
     {
-        return Ok(_userService.TryLogin(new User()
-        {
-            Username = userDto.Username,
-            Password = userDto.Password
-        }));
+        return Ok(_userService.TryLogin(
+            userDto.Username,
+            userDto.Password
+        ));
     }
-    
+
     [HttpPost("/register")]
     public void Create([FromBody] UserDto userDto)
     {
-        _userService.TryRegister(new User()
-        {
-            Username = userDto.Username,
-            Password = userDto.Password
-        });
-       
-        
+        _userService.TryRegister(
+            userDto.Username,
+            userDto.Password
+        );
     }
 }
