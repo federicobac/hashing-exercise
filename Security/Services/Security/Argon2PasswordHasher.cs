@@ -39,6 +39,12 @@ public class Argon2PasswordHasher : IPasswordHasher
      */
     public bool VerifyHashedPassword(string password, string hashedPassword)
     {
-        throw new NotImplementedException();
+        string[] parts = hashedPassword.Split('.');
+
+        string hash = parts[0];
+        string salt = parts[1];
+
+        string newHashedPassword = HashPassword(password, salt);
+        return newHashedPassword == hashedPassword;
     }
 }
